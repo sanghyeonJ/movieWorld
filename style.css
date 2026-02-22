@@ -888,6 +888,32 @@ html, body {
   color: rgba(255,255,255,0.62);
 }
 
+#s16 .thanks-git-btn {
+  position: absolute;
+  bottom: 58px;
+  right: 90px;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue-bright);
+  border: 1px solid var(--blue-border);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background .2s, transform .2s;
+}
+
+#s16 .thanks-git-btn:hover {
+  background: var(--blue-mid);
+  transform: translateY(-2px);
+  color: var(--white);
+}
+
+#s16 .thanks-git-btn img{
+  width: 42px;
+}
+
 /* ===== NAV ===== */
 .nav-bar {
   position: fixed;
