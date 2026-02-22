@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+
+<body>
+
+    <main class="container py-5" layout:fragment="content">
+        <div class="row">
+            <!-- 포스터 -->
+            <div class="col-md-4 mb-4">
+                <img th:src="${movie.posterPath != null} ? 'https://image.tmdb.org/t/p/w500' + ${movie.posterPath} : 'https://via.placeholder.com/300x450?text=No+Image'"
+                     th:alt="#{common.posterAlt}" class="img-fluid rounded shadow">
+            </div>
+            <div class="col-md-8">
+                <h1 class="mb-2" th:text="${movie.title}">제목</h1>
+                <p class="text-muted" th:if="${movie.originalTitle != null}" th:text="${movie.originalTitle}">원제</p>
+                <p class="mb-2">
+                    <span class="badge bg-warning text-dark" th:if="${movie.voteAverage != null}">★ <span th:text="${#numbers.formatDecimal(movie.voteAverage, 1, 1)}">0</span></span>
+                    <span class="text-muted ms-2" th:if="${movie.releaseDate != null}" th:text="${movie.releaseDate}">개봉일</span>
+                </p>
+                <p th:if="${movie.genres != null && !movie.genres.isEmpty()}">
+                    <span th:each="genre, iterStat : ${movie.genres}" class="badge bg-secondary me-1" th:text="${genre.name}">장르</span>
+                </p>
+                <hr>
+                <h5 th:text="#{detail.overview}">줄거리</h5>
+                <p th:text="${movie.overview != null} ? ${movie.overview} : #{detail.noOverview}" class="text-muted">줄거리</p>
+                <!-- <a th:href="@{/reviews/write(movieId=${movie.id})}" class="btn btn-primary">리뷰 작성</a> -->
+            </div>
+        </div>
+        
+        <!-- 리뷰 목록 -->
+		<section class="mt-5">
+		    <h5 th:text="#{detail.reviewList}">리뷰 목록</h5>
+		    <div th:if="${reviews != null && !reviews.isEmpty()}">
+		        <div th:each="review : ${reviews}" class="card mb-2">
+		            <div class="card-body py-2">
+		                <div class="d-flex justify-content-between align-items-center">
+		                    <strong th:text="${review.userName}">작성자</strong>
+		                    <span class="text-warning">★ <span th:text="${review.rating}">0</span><span th:text="#{detail.review.pointUnit}">점</span></span>
+		                </div>
+		                <p class="mb-0 mt-1" th:text="${review.content}">리뷰 내용</p>
+		                <small class="text-muted" th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</small>
+		            </div>
+		        </div>
+		    </div>
+		    <p th:if="${reviews == null || reviews.isEmpty()}" class="text-muted" th:text="#{detail.noReview}">아직 리뷰가 없습니다. 첫 리뷰를 작성해보세요.</p>
+		</section>
+        
+        <!-- 리뷰 작성 (로그인 시만) -->
+		<section class="mt-5" sec:authorize="isAuthenticated()">
+		    <h5 th:text="#{detail.writeReview}">리뷰 작성</h5>
+		    <!-- <p th:if="${message}" class="text-success" th:text="${message}"></p> -->
+		    <p th:if="${error}" class="text-danger" th:text="${error}"></p>
+		    <form th:action="@{/reviews}" method="post">
+		        <input type="hidden" name="movieId" th:value="${movie.id}">
+		        <div class="mb-2">
+		            <label class="form-label" th:text="#{detail.review.pointLabel}">평점</label>
+		            <select name="rating" class="form-select" required style="max-width: 120px;">
+		                <option value="" th:text="#{detail.review.point}">선택</option>
+		                <option value="1" th:text="#{detail.review.point1}">1점</option>
+		                <option value="2" th:text="#{detail.review.point2}">2점</option>
+		                <option value="3" th:text="#{detail.review.point3}">3점</option>
+		                <option value="4" th:text="#{detail.review.point4}">4점</option>
+		                <option value="5" th:text="#{detail.review.point5}">5점</option>
+		            </select>
+		        </div>
+		        <div class="mb-2">
+		            <label class="form-label" th:text="#{detail.review.reviewLabel}">리뷰 내용</label>
+		            <textarea name="content" class="form-control" rows="3" required th:placeholder="#{detail.review.placeholder}"></textarea>
+		        </div>
+		        <button type="submit" class="btn btn-primary" th:text="#{detail.review.reviewBtn}">리뷰 등록</button>
+		    </form>
+		</section>
+		<!-- 비로그인 시 안내 -->
+		<p class="mt-4 text-muted" sec:authorize="!isAuthenticated()">
+		    <span th:text="#{detail.review.noLoginCmt1}">리뷰를 작성하려면</span> <a th:href="@{/login}" th:text="#{detail.review.noLoginCmt2}">로그인</a><span th:text="#{detail.review.noLoginCmt3}">하세요.</span>
+		</p>
+    </main>
+
+</body>
+</html>

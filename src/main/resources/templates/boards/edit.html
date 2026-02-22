@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+
+    <main class="container py-4" layout:fragment="content">
+        <h2 class="mb-4" th:text="#{board.edit.title}">게시글 수정</h2>
+        <p th:if="${error}" class="text-danger" th:text="${error}"></p>
+
+        <form th:action="@{/boards/{id}/edit(id=${boardId})}" method="post" th:object="${boardRequest}">
+            <div class="mb-3">
+                <label class="form-label" th:text="#{board.write.titleLabel}">제목</label>
+                <input type="text" class="form-control" th:field="*{title}" required>
+                <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger small"></p>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" th:text="#{board.write.contentLabel}">내용</label>
+                <textarea class="form-control" rows="10" th:field="*{content}" required></textarea>
+                <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="text-danger small"></p>
+            </div>
+            <button type="submit" class="btn btn-primary" th:text="#{board.edit.submit}">수정</button>
+            <a th:href="@{/boards/{id}(id=${boardId})}" class="btn btn-secondary" th:text="#{board.edit.cancel}">취소</a>
+        </form>
+    </main>
+
+</html>

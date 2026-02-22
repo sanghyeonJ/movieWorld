@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.movieWorld.mapper.UserMapper">
+
+	<!-- 회원(users) 테이블 매핑 -->
+    <resultMap id="UserResultMap" type="com.movieWorld.domain.User">
+        <id column="id" property="id"/>
+        <result column="email" property="email"/>
+        <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="role_id" property="roleId"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <!-- 회원 등록 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (email, password, name, role_id)
+        VALUES (#{email}, #{password}, #{name}, #{roleId})
+    </insert>
+
+    <!-- 회원 ID로 조회 -->
+	<select id="findById" resultMap="UserResultMap">
+	    SELECT id, email, password, name, role_id, created_at, updated_at
+	    FROM users
+	    WHERE id = #{id}
+	</select>
+	
+	<!-- 이메일로 조회 (로그인 시 사용) -->
+	<select id="findByEmail" resultMap="UserResultMap">
+	    SELECT id, email, password, name, role_id, created_at, updated_at
+	    FROM users
+	    WHERE email = #{email}
+	</select>
+
+	<!-- 전체 회원 수 -->
+	<select id="count" resultType="int">
+	    SELECT COUNT(*) FROM users
+	</select>
+
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.movieWorld.mapper.BoardCommentMapper">
+
+    <resultMap id="BoardCommentResultMap" type="com.movieWorld.domain.BoardComment">
+        <id column="id" property="id"/>
+        <result column="board_id" property="boardId"/>
+        <result column="user_id" property="userId"/>
+        <result column="content" property="content"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO board_comments (board_id, user_id, content)
+        VALUES (#{boardId}, #{userId}, #{content})
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM board_comments WHERE id = #{id}
+    </delete>
+
+    <select id="findById" resultMap="BoardCommentResultMap">
+        SELECT id, board_id, user_id, content, created_at, updated_at
+        FROM board_comments WHERE id = #{id}
+    </select>
+
+    <select id="findCommentListByBoardId" resultType="com.movieWorld.dto.response.BoardCommentListDto">
+        SELECT c.id, c.board_id, c.user_id, c.content, c.created_at AS createdAt,
+               u.name AS userName
+        FROM board_comments c
+        INNER JOIN users u ON c.user_id = u.id
+        WHERE c.board_id = #{boardId}
+        ORDER BY c.created_at ASC
+    </select>
+</mapper>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+
+<body>
+    <div layout:fragment="content">
+        <section class="bg-primary bg-opacity-10 py-5">
+            <div class="container py-4 text-center">
+                <h1 class="display-5 fw-bold" th:text="#{main.title}">당신만의 영화를 찾아보세요</h1>
+                <p class="lead text-muted" th:text="#{main.subtitle}">리뷰를 남기고 AI 추천을 받아보세요.</p>
+                <a th:href="@{/movies}" class="btn btn-primary btn-lg me-2" th:text="#{main.searchMovie}">영화 검색</a>
+                <a th:href="@{/recommend}" class="btn btn-outline-primary btn-lg" th:text="#{main.aiRecommend}">AI 추천</a>
+            </div>
+        </section>
+        
+		
+		<!-- 인기 영화 / 최신 개봉작 영역 -->
+		<section class="py-5 bg-white">
+		    <div class="container">
+		        <!-- 인기 영화 -->
+		        <h2 class="mb-4" th:text="#{main.popular}">이번 주 인기 영화</h2>
+				<div class="row g-4 mb-5">
+				    <div class="col-6 col-md-3" th:each="movie : ${popularMovies}">
+				        <div class="card h-100 shadow-sm">
+				            <img th:src="${movie.posterPath != null} ? 'https://image.tmdb.org/t/p/w500' + ${movie.posterPath} : 'https://via.placeholder.com/300x450?text=No+Image'"
+				                 class="card-img-top" th:alt="#{common.posterAlt}" style="aspect-ratio: 2/3; object-fit: cover;">
+				            <div class="card-body p-2">
+				                <h6 class="card-title text-truncate" th:text="${movie.title}">제목</h6>
+				                <small class="text-warning">★ <span th:text="${movie.voteAverage != null} ? ${#numbers.formatDecimal(movie.voteAverage, 1, 1)} : '-'">0</span></small>
+				            </div>
+				            <a th:href="@{/movies/{id}(id=${movie.id})}" class="stretched-link"></a>
+				        </div>
+				    </div>
+				</div>
+		
+		        <!-- 최신 개봉작 -->
+		        <h2 class="mb-4" th:text="#{main.latest}">최신 개봉작</h2>
+				<div class="row g-4 mb-5">
+				    <div class="col-6 col-md-3" th:each="movie : ${latestMovies}">
+				        <div class="card h-100 shadow-sm">
+				            <img th:src="${movie.posterPath != null} ? 'https://image.tmdb.org/t/p/w500' + ${movie.posterPath} : 'https://via.placeholder.com/300x450?text=No+Image'"
+				                 class="card-img-top" th:alt="#{common.posterAlt}" style="aspect-ratio: 2/3; object-fit: cover;">
+				            <div class="card-body p-2">
+				                <h6 class="card-title text-truncate" th:text="${movie.title}">제목</h6>
+				                <small class="text-warning">★ <span th:text="${movie.voteAverage != null} ? ${#numbers.formatDecimal(movie.voteAverage, 1, 1)} : '-'">0</span></small>
+				            </div>
+				            <a th:href="@{/movies/{id}(id=${movie.id})}" class="stretched-link"></a>
+				        </div>
+				    </div>
+				</div>
+		
+		        <!-- 더보기 링크 (선택) -->
+		        <div class="text-center mt-4">
+		            <a th:href="@{/movies}" class="btn btn-outline-primary" th:text="#{main.more}">영화 전체 보기</a>
+		        </div>
+		    </div>
+		</section>
+		
+        
+        <section class="py-5">
+            <div class="container">
+                <h2 class="text-center mb-4" th:text="#{service.title}">서비스 안내</h2>
+                <div class="row g-4">
+                    <div class="col-md-4 text-center">
+                        <div class="p-3 border rounded h-100">
+                            <h5 th:text="#{service.search}">영화 검색</h5>
+                            <p class="text-muted small" th:text="#{service.search.desc}">제목으로 영화를 검색하고 상세 정보를 확인하세요.</p>
+                            <a th:href="@{/movies}" class="btn btn-sm btn-outline-primary" th:text="#{service.go}">바로가기</a>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-3 text-center">
+                        <div class="p-3 border rounded h-100">
+                            <h5 th:text="#{service.review}">리뷰 작성</h5>
+                            <p class="text-muted small" >본 영화에 평점과 리뷰를 남겨보세요.</p>
+                            <a th:href="@{/reviews}" class="btn btn-sm btn-outline-primary">바로가기</a>
+                        </div>
+                    </div> -->
+                    <div class="col-md-4 text-center">
+                        <div class="p-3 border rounded h-100">
+                            <h5 th:text="#{service.recommend}">AI 추천</h5>
+                            <p class="text-muted small" th:text="#{service.recommend.desc}">리뷰를 기반으로 맞춤 영화를 추천받으세요.</p>
+                            <a th:href="@{/recommend}" class="btn btn-sm btn-outline-primary" th:text="#{service.go}">바로가기</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="p-3 border rounded h-100">
+                            <h5 th:text="#{service.board}">게시판</h5>
+                            <p class="text-muted small" th:text="#{service.board.desc}">자유롭게 이야기를 나눠보세요.</p>
+                            <a th:href="@{/boards}" class="btn btn-sm btn-outline-primary" th:text="#{service.go}">바로가기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

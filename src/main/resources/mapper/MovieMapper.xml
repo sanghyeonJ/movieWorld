@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.movieWorld.mapper.MovieMapper">
+
+	<!-- 영화(movies) 테이블 매핑 -->
+    <resultMap id="MovieResultMap" type="com.movieWorld.domain.Movie">
+        <id column="id" property="id"/>
+        <result column="api_id" property="apiId"/>
+        <result column="title" property="title"/>
+        <result column="original_title" property="originalTitle"/>
+        <result column="poster_url" property="posterUrl"/>
+        <result column="backdrop_url" property="backdropUrl"/>
+        <result column="overview" property="overview"/>
+        <result column="release_date" property="releaseDate"/>
+        <result column="rating" property="rating"/>
+        <result column="vote_count" property="voteCount"/>
+        <result column="synced_at" property="syncedAt"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <!-- 영화 등록 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO movies (api_id, title, original_title, poster_url, backdrop_url,
+                            overview, release_date, rating, vote_count, synced_at)
+        VALUES (#{apiId}, #{title}, #{originalTitle}, #{posterUrl}, #{backdropUrl},
+                #{overview}, #{releaseDate}, #{rating}, #{voteCount}, #{syncedAt})
+    </insert>
+
+    <!-- 영화 정보 수정 (동기화 시 기존 영화 갱신용) -->
+    <update id="update">
+        UPDATE movies
+        SET title = #{title},
+            original_title = #{originalTitle},
+            poster_url = #{posterUrl},
+            backdrop_url = #{backdropUrl},
+            overview = #{overview},
+            release_date = #{releaseDate},
+            rating = #{rating},
+            vote_count = #{voteCount},
+            synced_at = #{syncedAt},
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <!-- 영화 ID로 조회 -->
+    <select id="findById" resultMap="MovieResultMap">
+        SELECT id, api_id, title, original_title, poster_url, backdrop_url,
+               overview, release_date, rating, vote_count, synced_at, created_at, updated_at
+        FROM movies
+        WHERE id = #{id}
+    </select>
+
+    <!-- API 영화 ID로 조회 (동기화 시 중복 확인용) -->
+    <select id="findByApiId" resultMap="MovieResultMap">
+        SELECT id, api_id, title, original_title, poster_url, backdrop_url,
+               overview, release_date, rating, vote_count, synced_at, created_at, updated_at
+        FROM movies
+        WHERE api_id = #{apiId}
+    </select>
+
+    <!-- 전체 영화 목록 조회 -->
+    <select id="findAll" resultMap="MovieResultMap">
+        SELECT id, api_id, title, original_title, poster_url, backdrop_url,
+               overview, release_date, rating, vote_count, synced_at, created_at, updated_at
+        FROM movies
+        ORDER BY synced_at DESC
+    </select>
+
+    <!-- 제목에 키워드가 포함된 영화 검색 (AI 추천 제목 → DB 매칭용) -->
+    <select id="findByTitleContaining" resultMap="MovieResultMap">
+        SELECT id, api_id, title, original_title, poster_url, backdrop_url,
+               overview, release_date, rating, vote_count, synced_at, created_at, updated_at
+        FROM movies
+        WHERE title LIKE CONCAT('%', #{keyword}, '%')
+           OR original_title LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY vote_count DESC
+        LIMIT 5
+    </select>
+
+    <!-- 전체 영화 수 -->
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM movies
+    </select>
+
+</mapper>

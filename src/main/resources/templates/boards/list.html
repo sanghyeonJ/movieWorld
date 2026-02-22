@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+
+    <main class="container py-4" layout:fragment="content">
+        <h1 class="mb-4" th:text="#{board.list.title}">게시판</h1>
+        
+        <!-- 글쓰기: 로그인 시 링크, 비로그인 시 클릭 시 알림 후 로그인 페이지 -->
+        <div class="d-flex flex-wrap justify-content-end align-items-center gap-2 mb-2">
+	        <div class="">
+	            <a sec:authorize="isAuthenticated()" th:href="@{/boards/write}" class="btn btn-primary" th:text="#{board.write}">글쓰기</a>
+	            <button sec:authorize="!isAuthenticated()" type="button" class="btn btn-primary"
+	                    th:onclick="'alert(\'' + #{board.write.needLogin} + '\'); location.href=\'/login\';'">
+	                <span th:text="#{board.write}">글쓰기</span>
+	            </button>
+	        </div>        	
+        </div>
+
+        <!-- 검색 -->
+        <div class="d-flex flex-wrap justify-content-end align-items-center gap-2">
+	        <form th:action="@{/boards}" method="get" class="mb-4">
+	            <div class="input-group" style="max-width: 400px;">
+	                <input type="text" name="search" class="form-control" th:placeholder="#{board.search.placeholder}"
+	                       th:value="${searchKeyword}">
+	                <input type="hidden" name="page" value="1">
+	                <button type="submit" class="btn btn-outline-secondary" th:text="#{board.search.button}">검색</button>
+	            </div>
+	        </form>        	
+        </div>
+
+
+        <!-- 목록 -->
+        <table class="table table-hover">
+        	<colgroup>
+        		<col width="10%">
+        		<col width="">
+        		<col width="16%">
+        		<col width="10%">
+        		<col width="12%">
+        	</colgroup>
+            <thead>
+                <tr>
+                    <th th:text="#{board.table.no}">번호</th>
+                    <th th:text="#{board.table.title}">제목</th>
+                    <th th:text="#{board.table.author}">작성자</th>
+                    <th th:text="#{board.table.views}">조회수</th>
+                    <th th:text="#{board.table.date}">작성일</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="board, stat : ${boards}">
+                    <td th:text="${boards.size() - stat.index + (currentPage - 1) * 10}">1</td>
+                    <td><a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}">제목</a></td>
+                    <td th:text="${board.userName}">작성자</td>
+                    <td th:text="${board.viewCount}">0</td>
+                    <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</td>
+                </tr>
+            </tbody>
+        </table>
+        <p th:if="${boards == null || boards.isEmpty()}" class="text-muted text-center" th:text="#{board.empty}">게시글이 없습니다.</p>
+
+        <!-- 페이지네이션 -->
+        <nav th:if="${totalPages != null and totalPages > 1}" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${currentPage <= 1} ? 'disabled'">
+                    <a th:if="${currentPage > 1}" class="page-link"
+                       th:href="@{/boards(search=${searchKeyword}, page=${currentPage - 1})}" th:text="#{board.pagination.prev}">이전</a>
+                    <span th:if="${currentPage <= 1}" class="page-link" th:text="#{board.pagination.prev}">이전</span>
+                </li>
+                <th:block th:with="start=${T(java.lang.Math).max(1, currentPage - 2)}, end=${T(java.lang.Math).min(totalPages, currentPage + 2)}">
+                    <li th:each="p : ${#numbers.sequence(start, end)}" class="page-item" th:classappend="${p == currentPage} ? 'active'">
+                        <a class="page-link" th:href="@{/boards(search=${searchKeyword}, page=${p})}" th:text="${p}">1</a>
+                    </li>
+                </th:block>
+                <li class="page-item" th:classappend="${currentPage >= totalPages} ? 'disabled'">
+                    <a th:if="${currentPage < totalPages}" class="page-link"
+                       th:href="@{/boards(search=${searchKeyword}, page=${currentPage + 1})}" th:text="#{board.pagination.next}">다음</a>
+                    <span th:if="${currentPage >= totalPages}" class="page-link" th:text="#{board.pagination.next}">다음</span>
+                </li>
+            </ul>
+        </nav>
+    </main>
+
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+    <main class="container py-4" layout:fragment="content">
+        <h1 class="mb-4" th:text="#{movie.list.title}">영화 목록</h1>
+
+		<!-- 정렬 선택 -->
+		<div class="mb-3">
+		    <span class="me-2" th:text="#{movie.list.title}">영화 목록</span>
+		    <a th:href="@{/movies(sort='popular', search=${searchKeyword}, page=1)}"
+		       class="btn btn-sm"
+		       th:classappend="${currentSort == 'popular'} ? 'btn-primary' : 'btn-outline-secondary'"
+		       th:text="#{movie.sort.popular}">인기순</a>
+		    <a th:href="@{/movies(sort='latest', search=${searchKeyword}, page=1)}"
+		       class="btn btn-sm"
+		       th:classappend="${currentSort == 'latest'} ? 'btn-primary' : 'btn-outline-secondary'"
+		       th:text="#{movie.sort.latest}">최신순</a>
+		    <a th:href="@{/movies(sort='rating', search=${searchKeyword}, page=1)}"
+		       class="btn btn-sm"
+		       th:classappend="${currentSort == 'rating'} ? 'btn-primary' : 'btn-outline-secondary'"
+		       th:text="#{movie.sort.rating}">평점순</a>
+		</div>
+        <!-- 검색 -->
+        <form th:action="@{/movies}" method="get" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" th:placeholder="#{movie.search.placeholder}"
+                       th:value="${searchKeyword}">
+                <button type="submit" class="btn btn-primary" th:text="#{movie.search.button}">검색</button>
+            </div>
+        </form>
+
+        <!-- 목록 -->
+        <div th:if="${movies != null && !movies.isEmpty()}" class="row g-4">
+            <div class="col-6 col-md-3" th:each="movie : ${movies}">
+                <div class="card h-100 shadow-sm">
+                    <a th:href="@{/movies/{id}(id=${movie.id})}">
+                        <img th:src="${movie.posterPath != null} ? 'https://image.tmdb.org/t/p/w500' + ${movie.posterPath} : '/images/noimage.jpg'"
+                             class="card-img-top" th:alt="#{common.posterAlt}" style="aspect-ratio: 2/3; object-fit: cover;">
+                    </a>
+                    <div class="card-body p-2">
+                        <h6 class="card-title text-truncate">
+                            <a th:href="@{/movies/{id}(id=${movie.id})}" class="text-decoration-none text-dark" th:text="${movie.title}">제목</a>
+                        </h6>
+                        <small class="text-warning">★ <span th:text="${movie.voteAverage != null} ? ${#numbers.formatDecimal(movie.voteAverage, 1, 1)} : '-'">0</span></small>
+                        <small class="text-muted ms-1" th:if="${movie.releaseDate != null}" th:text="${movie.releaseDate}">날짜</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p th:if="${movies == null || movies.isEmpty()}" class="text-muted" th:text="#{movie.noResult}">검색 결과가 없습니다.</p>
+        
+        <!-- 페이지네이션: totalPages > 1 일 때만 표시 -->
+		<nav th:if="${totalPages != null and totalPages > 1}" class="mt-4 mb-4">
+		    <ul class="pagination justify-content-center">
+		        <!-- 이전 -->
+		        <li class="page-item" th:classappend="${currentPage <= 1} ? 'disabled'">
+		            <a th:if="${currentPage > 1}" class="page-link"
+		               th:href="@{/movies(search=${searchKeyword}, sort=${currentSort}, page=${currentPage - 1})}">‹</a>
+		            <span th:if="${currentPage <= 1}" class="page-link">‹</span>
+		        </li>
+		
+		        <!-- 페이지 번호 -->
+		        <th:block th:with="start=${T(java.lang.Math).max(1, currentPage - 2)}, end=${T(java.lang.Math).min(totalPages, currentPage + 2)}">
+		            <li th:each="p : ${#numbers.sequence(start, end)}" class="page-item" th:classappend="${p == currentPage} ? 'active'">
+		                <a class="page-link" th:href="@{/movies(search=${searchKeyword}, sort=${currentSort}, page=${p})}" th:text="${p}">1</a>
+		            </li>
+		        </th:block>
+		
+		        <!-- 다음 -->
+		        <li class="page-item" th:classappend="${currentPage >= totalPages} ? 'disabled'">
+		            <a th:if="${currentPage < totalPages}" class="page-link"
+		               th:href="@{/movies(search=${searchKeyword}, sort=${currentSort}, page=${currentPage + 1})}">›</a>
+		            <span th:if="${currentPage >= totalPages}" class="page-link">›</span>
+		        </li>
+		    </ul>
+		</nav>
+    </main>
+
+</html>

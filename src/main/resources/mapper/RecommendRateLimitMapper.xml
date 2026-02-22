@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.movieWorld.mapper.RecommendRateLimitMapper">
+
+	<!-- 추천 호출 제한(recommend_rate_limits) 테이블 매핑 -->
+    <resultMap id="RecommendRateLimitResultMap" type="com.movieWorld.domain.RecommendRateLimit">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="date" property="date"/>
+        <result column="count" property="count"/>
+        <result column="last_request_at" property="lastRequestAt"/>
+        <result column="created_at" property="createdAt"/>
+    </resultMap>
+
+    <!-- 사용자 ID + 날짜로 조회 (일별 제한 확인용) -->
+    <select id="findByUserIdAndDate" resultMap="RecommendRateLimitResultMap">
+        SELECT id, user_id, date, count, last_request_at, created_at
+        FROM recommend_rate_limits
+        WHERE user_id = #{userId}
+          AND date = #{date}
+    </select>
+
+    <!-- 호출 이력 등록 (첫 요청 시) -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO recommend_rate_limits (user_id, date, count, last_request_at)
+        VALUES (#{userId}, #{date}, 0, NOW())
+    </insert>
+
+    <!-- 호출 횟수 증가 (같은 날 재요청 시) -->
+    <update id="updateCount">
+        UPDATE recommend_rate_limits
+        SET count = count + 1,
+            last_request_at = NOW()
+        WHERE user_id = #{userId}
+          AND date = #{date}
+    </update>
+
+</mapper>

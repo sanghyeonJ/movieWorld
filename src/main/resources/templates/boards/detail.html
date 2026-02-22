@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<div layout:fragment="content">
+    <main class="container py-4">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title" th:text="${board.title}">제목</h2>
+                <p class="text-muted small mb-0">
+                    <span th:text="${authorName}"><span th:text="#{board.detail.author}">작성자</span></span>
+                    <span class="ms-2" th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}"><span th:text="#{board.detail.date}">작성일</span></span>
+                    <span class="ms-2"><span th:text="#{board.detail.views}">조회</span> <span th:text="${board.viewCount}">0</span></span>
+                </p>
+                <hr>
+                <div class="card-text" style="white-space: pre-wrap;" th:text="${board.content}">내용</div>
+
+                <div class="mt-3" th:if="${isOwner}">
+                    <a th:href="@{/boards/{id}/edit(id=${board.id})}" class="btn btn-outline-primary btn-sm" th:text="#{board.detail.edit}">수정</a>
+                    <form th:action="@{/boards/{id}/delete(id=${board.id})}" method="post" class="d-inline" th:onsubmit="'return confirm(\'' + #{board.detail.deleteConfirm} + '\');'">
+				        <button type="submit" class="btn btn-outline-danger btn-sm" th:text="#{board.detail.delete}">삭제</button>
+				    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 댓글 -->
+		<section class="mt-4">
+		    <h5><span th:text="#{board.comment.title}">댓글</span> (<span th:text="${comments != null ? comments.size() : 0}">0</span>)</h5>
+		    <ul class="list-group list-group-flush">
+		        <li th:each="c : ${comments}" class="list-group-item d-flex justify-content-between">
+		            <div>
+		                <strong th:text="${c.userName}">작성자</strong>
+		                <span class="text-muted ms-2" th:text="${#temporals.format(c.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</span>
+		                <p class="mb-0 mt-1" th:text="${c.content}">내용</p>
+		            </div>
+		            <div sec:authorize="isAuthenticated()">
+		                <form th:if="${c.userId == currentUserId}" 
+		                      th:action="@{/boards/comments/{id}/delete(id=${c.id})}" method="post" class="d-inline">
+		                    <button type="submit" class="btn btn-sm btn-outline-danger" th:text="#{board.detail.delete}">삭제</button>
+		                </form>
+		            </div>
+		        </li>
+		    </ul>
+		    <p th:if="${comments == null || comments.isEmpty()}" class="text-muted" th:text="#{board.comment.empty}">댓글이 없습니다.</p>
+		</section>
+		
+		<!-- 댓글 작성 (로그인 시) -->
+		<section class="mt-3" sec:authorize="isAuthenticated()">
+		    <form th:action="@{/boards/{boardId}/comments(boardId=${board.id})}" method="post">
+		        <textarea name="content" class="form-control" rows="2" th:placeholder="#{board.comment.placeholder}" required></textarea>
+		        <button type="submit" class="btn btn-primary btn-sm mt-2" th:text="#{board.comment.submit}">댓글 등록</button>
+		    </form>
+		</section>
+
+        <div class="mt-4">
+            <a th:href="@{/boards}" class="btn btn-secondary" th:text="#{board.detail.back}">목록</a>
+        </div>
+    </main>
+
+    <!-- 삭제 확인 모달 -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" th:text="#{board.detail.deleteConfirm}">정말 삭제하시겠습니까?</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{common.cancel}">취소</button>
+                    <form th:action="@{/boards/{id}(id=${board.id})}" method="post" th:attr="action=@{/boards/{id}/delete(id=${board.id})}" style="display: inline;">
+                        <input type="hidden" name="_method" value="delete">
+                        <button type="submit" class="btn btn-danger" th:text="#{board.detail.delete}">삭제</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

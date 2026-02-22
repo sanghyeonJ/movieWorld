@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Footer</title>
+</head>
+<body>
+    <footer th:fragment="footer" class="bg-dark text-light py-4 mt-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2025 Movie World. <span th:text="#{footer.copyright}">영화 리뷰</span></p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a th:href="@{/boards}" class="text-light text-decoration-none me-3" th:text="#{footer.board}">게시판</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

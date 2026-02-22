@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+
+    <main class="container py-5" layout:fragment="content">
+        <h2 class="mb-4" th:text="#{board.write.title}">글쓰기</h2>
+
+        <form th:action="@{/boards/write}" method="post" th:object="${boardRequest}">
+	        <p th:if="${#fields.hasErrors('*')}" class="text-danger">
+	            <span th:each="err : ${#fields.errors('*')}" th:text="${err}">오류</span>
+	        </p>
+
+            <div class="mb-3">
+                <label for="title" class="form-label" th:text="#{board.write.titleLabel}">제목</label>
+                <input type="text" id="title" name="title" class="form-control" th:field="*{title}" required>
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label" th:text="#{board.write.contentLabel}">내용</label>
+                <textarea id="content" name="content" class="form-control" rows="10" th:field="*{content}" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" th:text="#{board.write.submit}">등록</button>
+            <a th:href="@{/boards}" class="btn btn-secondary" th:text="#{board.write.back}">목록</a>
+        </form>
+    </main>
+
+</html>

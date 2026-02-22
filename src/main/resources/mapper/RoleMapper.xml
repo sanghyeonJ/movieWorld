@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.movieWorld.mapper.RoleMapper">
+
+	<!-- 권한(roles) 테이블 매핑 -->
+    <resultMap id="RoleResultMap" type="com.movieWorld.domain.Role">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="created_at" property="createdAt"/>
+    </resultMap>
+
+    <!-- 권한 ID로 조회 -->
+    <select id="findById" resultMap="RoleResultMap">
+        SELECT id, name, created_at
+        FROM roles
+        WHERE id = #{id}
+    </select>
+
+    <!-- 권한명으로 조회 (ROLE_USER, ROLE_ADMIN) -->
+    <select id="findByName" resultMap="RoleResultMap">
+        SELECT id, name, created_at
+        FROM roles
+        WHERE name = #{name}
+    </select>
+
+</mapper>

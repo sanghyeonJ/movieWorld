@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.movieWorld.mapper.RecommendationMapper">
+
+	<!-- 추천 결과(recommendations) 테이블 매핑 -->
+    <resultMap id="RecommendationResultMap" type="com.movieWorld.domain.Recommendation">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="review_count" property="reviewCount"/>
+        <result column="review_last_updated_at" property="reviewLastUpdatedAt"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="is_valid" property="isValid"/>
+    </resultMap>
+
+    <!-- 추천 결과 등록 (캐시 저장) -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO recommendations (user_id, review_count, review_last_updated_at, is_valid)
+        VALUES (#{userId}, #{reviewCount}, #{reviewLastUpdatedAt}, #{isValid})
+    </insert>
+
+    <!-- 사용자별 기존 추천 결과 무효화 (리뷰 변경 시 호출) -->
+    <update id="invalidateByUserId">
+        UPDATE recommendations
+        SET is_valid = FALSE
+        WHERE user_id = #{userId}
+          AND is_valid = TRUE
+    </update>
+
+    <!-- 사용자의 유효한 추천 결과 1건 조회 (캐시 조회용, 최신 1건) -->
+    <select id="findValidByUserId" resultMap="RecommendationResultMap">
+        SELECT id, user_id, review_count, review_last_updated_at, created_at, is_valid
+        FROM recommendations
+        WHERE user_id = #{userId}
+          AND is_valid = TRUE
+        ORDER BY created_at DESC
+        LIMIT 1
+    </select>
+
+    <!-- 전체 추천 결과 수 -->
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM recommendations
+    </select>
+
+</mapper>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Header</title>
+</head>
+<body>
+    <!-- fragment 이름: header (base에서 ~{fragments/header :: header} 로 불러옴) -->
+    <header th:fragment="header">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <!-- 로고: 클릭 시 메인(/) 이동 -->
+                <a class="navbar-brand fw-bold" th:href="@{/}" th:text="#{app.name}">Movie World</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" th:attr="aria-label=#{header.menuToggle}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/}" th:text="#{menu.home}">홈</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/movies}" th:text="#{menu.movie}">영화</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/boards}" th:text="#{menu.board}">게시판</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/recommend}" th:text="#{menu.recommend}">AI 추천</a>
+                        </li>
+                        <!-- 관리자만 보이는 메뉴 -->
+                        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                            <a class="nav-link text-warning" th:href="@{/admin}" th:text="#{menu.admin}" target="_blank" rel="noopener noreferrer">관리자</a>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav">
+                    	<!-- 언어 전환 (기존 네비게이션 ul 안이나 오른쪽에 추가) -->
+						<li class="nav-item dropdown">
+						    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" th:text="#{menu.lang}">언어</a>
+						    <ul class="dropdown-menu">
+						        <li><a class="dropdown-item" th:href="@{/(lang=ko)}" th:text="#{header.lang.ko}">한국어</a></li>
+						        <li><a class="dropdown-item" th:href="@{/(lang=ja)}" th:text="#{header.lang.ja}">日本語</a></li>
+						    </ul>
+						</li>
+                        <!-- 비로그인: 로그인, 회원가입 -->
+                        <li class="nav-item" sec:authorize="!isAuthenticated()">
+                            <a class="nav-link" th:href="@{/login}" th:text="#{common.login}">로그인</a>
+                        </li>
+                        <li class="nav-item" sec:authorize="!isAuthenticated()">
+                            <a class="nav-link" th:href="@{/signup}" th:text="#{common.signup}">회원가입</a>
+                        </li>
+                        <!-- 로그인: 이메일(이름), 로그아웃 -->
+                        <li class="nav-item" sec:authorize="isAuthenticated()">
+                            <span class="nav-link text-light" sec:authentication="name">이메일</span>
+                        </li>
+                        <li class="nav-item" sec:authorize="isAuthenticated()">
+                            <a class="nav-link" th:href="@{/logout}" th:text="#{common.logout}">로그아웃</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+</body>
+</html>

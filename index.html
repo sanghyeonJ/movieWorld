@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Movie World - AI基盤映画推薦プラットフォーム</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="./style.css" rel="stylesheet">
+<style>
+  
+</style>
+</head>
+<body>
+
+<nav class="nav-bar" id="navBar"></nav>
+
+<!-- S1: TITLE -->
+<div class="slide" id="s1">
+  <span class="slide-num">01</span>
+  <div class="img-box s1-img" style="width:560px;height:720px;">
+    <img src="./images/titlebg.png" alt="titlebg">
+  </div>
+  <div class="s1-right">
+    <p class="s1-label">Movie World</p>
+    <h1 class="s1-h1">AI基盤映画推薦</h1>
+    <h2 class="s1-h2">プラットフォーム</h2>
+    <p class="s1-sub">ユーザーレビューに基づくパーソナライズされた映画推薦サービス</p>
+  </div>
+</div>
+
+<!-- S2: 目次 -->
+<div class="slide" id="s2">
+  <span class="slide-num">02</span>
+  <h2 class="section-title" style="position:absolute;top:56px;left:90px;">目次</h2>
+  <div style="width:100%;padding:128px 90px 50px;display:flex;flex-direction:column;justify-content:center;flex:1;">
+    <div class="toc-wrap">
+      <div class="toc-item"><div class="toc-num">01</div><div class="toc-h">開発目的</div><div class="toc-s">問題認識と解決方案</div></div>
+      <div class="toc-item"><div class="toc-num">02</div><div class="toc-h">システム概要</div><div class="toc-s">プロジェクト紹介と特徴</div></div>
+      <div class="toc-item"><div class="toc-num">03</div><div class="toc-h">主要機能</div><div class="toc-s">6つのコア機能</div></div>
+      <div class="toc-item"><div class="toc-num">04</div><div class="toc-h">技術スタック</div><div class="toc-s">使用技術とツール</div></div>
+      <div class="toc-item"><div class="toc-num">05</div><div class="toc-h">データベース設計</div><div class="toc-s">システム設計とDB構造</div></div>
+      <div class="toc-item"><div class="toc-num">06</div><div class="toc-h">機能デモ</div><div class="toc-s">実装内容と画面</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S3: 開発目的 -->
+<div class="slide" id="s3">
+  <span class="slide-num">03</span>
+  <div class="img-box s3-banner" style="width:1280px;height:220px;">
+    <img src="./images/page3.png" alt="page3">
+  </div>
+  <div class="s3-body">
+    <h2 class="s3-title">開発目的</h2>
+    <div class="p-rows">
+      <div class="p-row">
+        <div class="p-icon-col"><div class="p-icon">?</div><div class="p-line"></div></div>
+        <div class="p-text"><div class="p-label">問題認識</div><div class="p-desc">数多くの映画の中から自分の好みに合う映画を見つけることが困難。平均評点だけでは個人の好みを反映できない限界がある。</div></div>
+      </div>
+      <div class="p-row">
+        <div class="p-icon-col"><div class="p-icon">💡</div><div class="p-line"></div></div>
+        <div class="p-text"><div class="p-label">解決方案</div><div class="p-desc">ユーザーが作成した映画レビューをAIが分析して個人の好みを把握。Google Gemini AIを活用した知能型推薦システムを構築。</div></div>
+      </div>
+      <div class="p-row">
+        <div class="p-icon-col"><div class="p-icon">☆</div></div>
+        <div class="p-text"><div class="p-label">期待効果</div><div class="p-desc">ユーザーカスタマイズ映画推薦で満足度向上。レビュー基盤コミュニティ形成。AI技術を活用した実用的なウェブサービス実装経験。</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S4: システム概要 -->
+<div class="slide" id="s4">
+  <span class="slide-num">04</span>
+  <div class="s4-left">
+    <h2 class="section-title">システム概要</h2>
+    <div class="s4-name">Movie World</div>
+    <div class="s4-desc">ウェブベース映画推薦プラットフォーム</div>
+    <div class="s4-core"><strong>コア機能:</strong> AI基盤カスタマイズ映画推薦</div>
+    <hr>
+    <div class="s4-users-h">主要ユーザー</div>
+    <ul class="dot-list">
+      <li><strong style="color:var(--white)">一般ユーザー:</strong>&nbsp;映画検索、レビュー作成、AI推薦</li>
+      <li><strong style="color:var(--white)">管理者:</strong>&nbsp;統計照会、映画データ同期管理</li>
+    </ul>
+  </div>
+  <div class="s4-right">
+    <div class="border-card"><div class="card-title">リアルタイム映画情報</div><div class="card-desc" style="color:var(--gray)">TMDB API連動</div></div>
+    <div class="border-card"><div class="card-title">知能型推薦エンジン</div><div class="card-desc" style="color:var(--gray)">Google Gemini AI活用</div></div>
+    <div class="border-card"><div class="card-title">好み分析</div><div class="card-desc" style="color:var(--gray)">ユーザーレビュー基盤</div></div>
+    <div class="border-card"><div class="card-title">コミュニティ</div><div class="card-desc" style="color:var(--gray)">掲示板機能</div></div>
+    <div class="border-card"><div class="card-title">多言語対応</div><div class="card-desc" style="color:var(--gray)">韓国語/日本語</div></div>
+    <div class="border-card"><div class="card-title">セキュリティ</div><div class="card-desc" style="color:var(--gray)">Spring Security基盤</div></div>
+  </div>
+</div>
+
+<!-- S5: 主要機能 -->
+<div class="slide" id="s5">
+  <span class="slide-num">05</span>
+  <h2 class="section-title">主要機能</h2>
+  <div class="f-row1">
+    <div class="blue-card"><div class="card-title">映画検索・照会</div><div class="card-desc">TMDB API連動でリアルタイム映画情報提供。人気順/最新順/評点順ソート機能。</div></div>
+    <div class="blue-card"><div class="card-title">レビューシステム</div><div class="card-desc">映画別評点(1-5点)とレビュー作成。レビュー修正/削除機能。</div></div>
+    <div class="blue-card"><div class="card-title">AI映画推薦</div><div class="card-desc">Google Gemini AI活用。ユーザーレビュー基盤好み分析。カスタマイズ映画5編推薦。</div></div>
+    <div class="blue-card"><div class="card-title">掲示板</div><div class="card-desc">投稿作成/修正/削除。コメント機能。検索とページング処理。</div></div>
+  </div>
+  <div class="f-row2">
+    <div class="blue-card"><div class="card-title">管理者ダッシュボード</div><div class="card-desc">統計現況照会。映画同期管理とログ照会。手動同期機能。</div></div>
+    <div class="blue-card"><div class="card-title">多言語対応</div><div class="card-desc">韓国語/日本語動的言語切替。MessageSource活用国際化。</div></div>
+  </div>
+</div>
+
+<!-- S6: 技術スタック -->
+<div class="slide" id="s6">
+  <span class="slide-num">06</span>
+  <h2 class="section-title">技術スタック</h2>
+  <div class="tech-grid">
+    <div class="t-card"><div class="t-title">Backend</div><ul class="dot-list"><li>Java 17</li><li>Spring Boot 3.5.10</li><li>Spring Security</li><li>MyBatis 3.0.5</li><li>MySQL 8.0</li></ul></div>
+    <div class="t-card"><div class="t-title">Frontend</div><ul class="dot-list"><li>Thymeleaf</li><li>Bootstrap 5</li><li>JavaScript (AJAX)</li></ul></div>
+    <div class="t-card"><div class="t-title">External APIs</div><ul class="dot-list"><li>TMDB API - 映画データ</li><li>Google Gemini API - AI推薦</li></ul></div>
+    <div class="t-card"><div class="t-title">Build Tool</div><p style="font-size:13px;color:var(--gray);margin-top:8px;line-height:1.6;">Gradle - ビルドと依存性管理</p></div>
+  </div>
+</div>
+
+<!-- S7: データベース設計 -->
+<div class="slide" id="s7">
+  <span class="slide-num">07</span>
+  <div class="db-left">
+    <h2 class="section-title" style="font-size:32px;margin-bottom:24px;">データベース設計</h2>
+    <div class="db-t-title">主要テーブル</div>
+    <ul class="db-tlist">
+      <li><strong>roles:</strong>&nbsp;権限情報（ROLE_USER / ROLE_ADMIN）</li>
+      <li><strong>users:</strong>&nbsp;会員情報（メール・パスワード・名前・権限）</li>
+      <li><strong>genres:</strong>&nbsp;ジャンル情報（TMDB API連携）</li>
+      <li><strong>movies:</strong>&nbsp;映画情報（タイトル・ポスター・あらすじ・公開日等）</li>
+      <li><strong>movie_genres:</strong>&nbsp;映画‐ジャンル対応（多対多）</li>
+      <li><strong>reviews:</strong>&nbsp;レビュー情報（会員ごとの映画評価・コメント）</li>
+      <li><strong>boards:</strong>&nbsp;掲示板投稿（タイトル・本文・閲覧数）</li>
+      <li><strong>board_comments:</strong>&nbsp;掲示板コメント</li>
+      <li><strong>recommendations:</strong>&nbsp;AI推薦結果キャッシュ（会員ごと1件）</li>
+      <li><strong>recommendation_items:</strong>&nbsp;推薦対象映画（順位・推薦理由）</li>
+      <li><strong>recommend_rate_limits:</strong>&nbsp;推薦リクエスト制限（1日あたり回数）</li>
+      <li><strong>movie_sync_log:</strong>&nbsp;TMDB映画同期実行ログ</li>
+    </ul>
+  </div>
+  <div class="db-right">
+    <img src="./images/erd.png" alt="erd">
+  </div>
+</div>
+
+<!-- S8: ログイン -->
+<div class="slide" id="s8">
+  <span class="slide-num">08</span>
+  <h2 class="section-title">ログインと会員登録</h2>
+  <div class="video-box">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/xK3b7wZndDM?si=jykDu7ZcttpYv3aE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+  <div class="lg-grid">
+    <div>
+      <div class="lg-sec-title">会員登録機能</div>
+      <ul class="dot-list"><li>メール、パスワード、名前入力</li><li>メール重複チェック</li><li>パスワード暗号化(BCrypt)</li><li>入力有効性検証(@Valid)</li></ul>
+    </div>
+    <div>
+      <div class="lg-sec-title">ログイン機能</div>
+      <ul class="dot-list"><li>Spring Security フォームログイン</li><li>メール/パスワード認証</li><li>セッション基盤認証</li><li>ログイン失敗処理</li></ul>
+    </div>
+  </div>
+</div>
+
+<!-- S9: 映画リスト -->
+<div class="slide" id="s9">
+  <span class="slide-num">09</span>
+  <h2 class="section-title">映画リストと検索</h2>
+  <div class="video-box">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/ncWp7RpIwDA?si=aqxRjMV2g9bXbWkd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+  <div class="s9-cards">
+    <div class="border-card"><div class="card-title">映画検索機能</div><div class="card-desc">タイトルで映画を検索（TMDB API利用）。リアルタイム検索結果表示。</div></div>
+    <div class="border-card"><div class="card-title">映画目録機能</div><div class="card-desc">TMDB APIから人気映画目録を表示。ポスター、タイトル、評点。人気/最新/評点順ソート可能。</div></div>
+    <div class="border-card"><div class="card-title">映画詳細ページ</div><div class="card-desc">映画ポスター、タイトル、あらすじ、評点、公開日を表示。レビュー作成・表示機能付き。</div></div>
+  </div>
+</div>
+
+<!-- S10: AI推薦システム -->
+<div class="slide" id="s10">
+  <span class="slide-num">10</span>
+  <h2 class="section-title">AI推薦システム</h2>
+  <div class="flow-wrap">
+    <div class="f-row left"><div class="f-text"><div class="f-label">レビュー収集</div><div class="f-desc">ユーザーレビュー最小5個以上必要</div></div><div class="f-num">1</div><div class="space"></div></div>
+    <div class="f-vline"></div>
+    <div class="f-row right"><div class="space"></div><div class="f-num">2</div><div class="f-text"><div class="f-label">AI分析</div><div class="f-desc">Gemini APIに好み分析リクエスト</div></div></div>
+    <div class="f-vline"></div>
+    <div class="f-row left"><div class="f-text"><div class="f-label">結果受信</div><div class="f-desc">JSON形式推薦結果受信とパーシング</div></div><div class="f-num">3</div><div class="space"></div></div>
+    <div class="f-vline"></div>
+    <div class="f-row right"><div class="space"></div><div class="f-num">4</div><div class="f-text"><div class="f-label">映画マッチング</div><div class="f-desc">TMDB検索で映画マッチング</div></div></div>
+    <div class="f-vline"></div>
+    <div class="f-row left"><div class="f-text"><div class="f-label">結果表示</div><div class="f-desc">推薦結果保存と表示</div></div><div class="f-num">5</div><div class="space"></div></div>
+  </div>
+</div>
+
+<!-- S11: AI技術的特徴 -->
+<div class="slide" id="s11">
+  <span class="slide-num">11</span>
+  <div style="width:100%;display:flex;flex-direction:column;">
+    <h2 class="section-title">AI推薦の技術的特徴</h2>
+    <div style="display:flex;gap:46px;flex:1;align-items:stretch;">
+      <div class="s11-col s11-left">
+        <div class="s11-cards">
+          <div class="s11-card"><div><div class="card-title">推薦結果表示</div><div class="card-desc">推薦映画5編をカード形式で表示。各映画別ポスター、タイトル、推薦理由を提供。</div></div></div>
+          <div class="s11-card"><div><div class="card-title">JSON Parser</div><div class="card-desc">Truncated JSON Parserで応答切断処理。安定的なデータ処理を保証。</div></div></div>
+          <div class="s11-card"><div><div class="card-title">Rate Limiting</div><div class="card-desc">日30回、分1回制限。API使用量を効率的に管理。</div></div></div>
+          <div class="s11-card"><div><div class="card-title">多言語プロンプト</div><div class="card-desc">韓国語/日本語プロンプト対応。ユーザー言語設定に合わせた推薦。</div></div></div>
+        </div>
+      </div>
+      <div class="s11-col s11-right">
+        <div class="video-box">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/dk2ZZDZ_NLY?si=ZwAJZXzDS5g8rfgx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S12: 掲示板 -->
+<div class="slide" id="s12">
+  <span class="slide-num">12</span>
+  <h2 class="section-title">掲示板機能</h2>
+  <div class="video-box">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/uTmePTXP468?si=xgn75DG-bUxlE0fs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+  <div class="s12-cards">
+    <div class="border-card"><div class="card-title">投稿管理</div><div class="card-desc">投稿作成/修正/削除機能。タイトルと内容入力。閲覧数表示。</div></div>
+    <div class="border-card"><div class="card-title">コメント機能</div><div class="card-desc">投稿別コメント作成。リアルタイムコメント表示。コミュニティ活性化。</div></div>
+    <div class="border-card"><div class="card-title">検索とページング</div><div class="card-desc">タイトル・内容検索機能。効率的なページング処理。ユーザビリティ向上。</div></div>
+  </div>
+</div>
+
+<!-- S13: 管理者ダッシュボード -->
+<div class="slide" id="s13">
+  <span class="slide-num">13</span>
+  <div class="video-box">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/h2lMxvNu-bA?si=uDPUOYDhfXt_QGQ2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+  <div class="s13-right">
+    <h2 class="s13-title">管理者ダッシュボード - 同期管理</h2>
+    <div class="blue-card"><div class="card-title">同期ログテーブル</div><div class="card-desc">同期タイプ、成功/失敗数、時間、状態を表示。詳細なログ管理で問題追跡が容易。</div></div>
+    <div class="s13-gap"></div>
+    <div class="blue-card"><div class="card-title">手動同期</div><div class="card-desc">手動同期ボタン提供。AJAX基盤非同期処理。プログレスバーモーダルで進行状況表示。</div></div>
+    <div class="s13-gap"></div>
+    <div class="blue-card"><div class="card-title">自動同期</div><div class="card-desc">Spring Scheduler活用。毎日早朝自動実行(人気映画2時、現在上映作3時、公開予定作4時)。</div></div>
+  </div>
+</div>
+
+<!-- S14: 技術的ハイライト -->
+<div class="slide" id="s14">
+  <span class="slide-num">14</span>
+  <h2 class="section-title">実装の技術的ハイライト</h2>
+  <div class="hi-grid">
+    <div class="hi-card"><div class="hi-title">セキュリティ</div><div class="hi-desc">Spring Securityでフォーム基盤認証実装。BCryptパスワード暗号化。セッション管理と権限基盤アクセス制御。</div></div>
+    <div class="hi-card"><div class="hi-title">データ管理</div><div class="hi-desc">MyBatis ORM活用。効率的なSQL管理。トランザクション処理でデータ整合性保証。</div></div>
+    <div class="hi-card"><div class="hi-title">外部API連動</div><div class="hi-desc">TMDB APIで映画データ取得。Gemini APIでAI推薦生成。非同期処理で性能最適化。</div></div>
+    <div class="hi-card"><div class="hi-title">国際化</div><div class="hi-desc">MessageSource活用多言語対応。韓国語/日本語動的切替。ユーザー設定基盤言語提供。</div></div>
+    <div class="hi-card"><div class="hi-title">スケジューリング</div><div class="hi-desc">Spring Schedulerで自動同期。定期的な映画データ更新。システム安定性向上。</div></div>
+    <div class="hi-card"><div class="hi-title">レスポンシブUI</div><div class="hi-desc">Bootstrap 5活用。モバイル/デスクトップ対応。Thymeleafテンプレートエンジン。</div></div>
+  </div>
+</div>
+
+<!-- S15: 開発経験 -->
+<div class="slide" id="s15">
+  <span class="slide-num">15</span>
+  <div class="img-box s15-banner" style="width:1280px;height:208px;">
+    <img src="./images/page16.png" alt="page16">
+  </div>
+  <div class="s15-body">
+    <h2 class="s15-title">開発経験と学習</h2>
+    <div class="exp-grid">
+      <div class="exp-item"><div class="exp-title">Spring Boot</div><div class="exp-desc">Spring Boot 3.x基盤ウェブアプリケーション開発。依存性注入とAOP理解。RESTful API設計原則適用。</div></div>
+      <div class="exp-item"><div class="exp-title">AI技術活用</div><div class="exp-desc">Google Gemini API統合経験。プロンプトエンジニアリング学習。AI応答処理とエラーハンドリング。</div></div>
+      <div class="exp-item"><div class="exp-title">データベース設計</div><div class="exp-desc">正規化されたDB設計経験。MyBatis ORM活用。効率的なクエリ最適化。</div></div>
+      <div class="exp-item"><div class="exp-title">セキュリティ実装</div><div class="exp-desc">Spring Security認証/認可。パスワード暗号化とセッション管理。セキュアなウェブアプリケーション開発。</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- S16: ありがとうございました -->
+<div class="slide" id="s16">
+  <span class="slide-num">16</span>
+  <h1 class="thanks-h">ありがとうございました</h1>
+  <div class="thanks-name">Movie World</div>
+  <div class="thanks-sub">AI基盤カスタマイズ映画推薦プラットフォーム</div>
+  <hr>
+  <div class="thanks-grid">
+    <div class="t-card"><div class="t-card-h">Spring Boot</div><div class="t-card-s">バックエンド開発</div></div>
+    <div class="t-card"><div class="t-card-h">外部API連動</div><div class="t-card-s">TMDB & Gemini</div></div>
+    <div class="t-card"><div class="t-card-h">AI技術活用</div><div class="t-card-s">知能型推薦システム</div></div>
+    <div class="t-card"><div class="t-card-h">UX設計</div><div class="t-card-s">ユーザー中心設計</div></div>
+  </div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const nav = document.getElementById('navBar');
+
+  slides.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.className = 'nav-dot' + (i === 0 ? ' on' : '');
+    b.title = 'Slide ' + (i + 1);
+    b.onclick = () => slides[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    nav.appendChild(b);
+  });
+
+  const dots = document.querySelectorAll('.nav-dot');
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const idx = Array.from(slides).indexOf(e.target);
+        dots.forEach(d => d.classList.remove('on'));
+        if (dots[idx]) dots[idx].classList.add('on');
+      }
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

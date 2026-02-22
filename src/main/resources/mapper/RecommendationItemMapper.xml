@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.movieWorld.mapper.RecommendationItemMapper">
+
+	<!-- 추천 항목(recommendation_items) 테이블 매핑 -->
+    <resultMap id="RecommendationItemResultMap" type="com.movieWorld.domain.RecommendationItem">
+        <id column="id" property="id"/>
+        <result column="recommendation_id" property="recommendationId"/>
+        <result column="movie_id" property="movieId"/>
+        <result column="item_rank" property="itemRank"/>
+        <result column="reason" property="reason"/>
+        <result column="confidence_score" property="confidenceScore"/>
+        <result column="created_at" property="createdAt"/>
+    </resultMap>
+
+    <!-- 추천 항목(영화 1개) 등록 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO recommendation_items (recommendation_id, movie_id, item_rank, reason, confidence_score)
+        VALUES (#{recommendationId}, #{movieId}, #{itemRank}, #{reason}, #{confidenceScore})
+    </insert>
+
+    <!-- 추천 ID로 추천된 영화 목록 조회 (순위순) -->
+    <select id="findByRecommendationId" resultMap="RecommendationItemResultMap">
+        SELECT id, recommendation_id, movie_id, item_rank, reason, confidence_score, created_at
+        FROM recommendation_items
+        WHERE recommendation_id = #{recommendationId}
+        ORDER BY item_rank ASC
+    </select>
+
+</mapper>

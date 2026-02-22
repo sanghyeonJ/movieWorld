@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+    <div class="container py-5" layout:fragment="content">
+        <h1 class="mb-4" th:text="#{recommend.result.title}">추천 결과</h1>
+
+        <div th:if="${recommendation != null and !recommendation.items.isEmpty()}" class="row g-4">
+            <div th:each="item : ${recommendation.items}" class="col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <img th:src="${item.posterUrl != null} ? ${item.posterUrl} : @{/images/default-poster.png}"
+                         th:alt="#{recommend.result.posterAlt}" class="card-img-top" style="height: 320px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${item.title}">영화 제목</h5>
+                        <p class="card-text small text-muted" th:text="${item.reason}" th:title="#{recommend.result.reason}">추천 이유</p>
+                        <a th:if="${item.movieDetailId != null}" th:href="@{/movies/{id}(id=${item.movieDetailId})}" class="btn btn-sm btn-outline-primary" th:text="#{recommend.result.detailBtn}">상세 보기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${recommendation == null or recommendation.items.isEmpty()}" class="alert alert-info" th:text="#{recommend.result.empty}">
+            아직 추천 결과가 없습니다. 추천 요청을 한 뒤 다시 확인해 주세요.
+        </div>
+
+        <div class="mt-4">
+            <a th:href="@{/recommend}" class="btn btn-outline-secondary" th:text="#{recommend.result.backRequest}">추천 요청 페이지로</a>
+            <a th:href="@{/}" class="btn btn-outline-secondary ms-2" th:text="#{recommend.result.backHome}">메인으로</a>
+        </div>
+    </div>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+
+    <main class="container py-5" style="max-width: 400px;" layout:fragment="content">
+        <h2 class="mb-4" th:text="#{signup.title}">회원가입</h2>
+        <p th:if="${message}" class="text-success" th:text="${message}"></p>
+        <p th:if="${signupErrorMessage}" class="text-danger" th:text="${signupErrorMessage}"></p>
+
+        <form th:action="@{/signup}" method="post" th:object="${signupRequest}">
+            <div class="mb-3">
+                <label class="form-label" th:text="#{signup.email}">이메일</label>
+                <input type="email" th:field="*{email}" class="form-control" th:placeholder="#{signup.email.placeholder}">
+                <p class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" th:text="#{signup.password}">비밀번호</label>
+                <input type="password" th:field="*{password}" class="form-control" th:placeholder="#{signup.password.placeholder}">
+                <p class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" th:text="#{signup.passwordConfirm}">비밀번호 확인</label>
+                <input type="password" th:field="*{passwordConfirm}" class="form-control">
+                <p class="text-danger" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></p>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" th:text="#{signup.name}">이름</label>
+                <input type="text" th:field="*{name}" class="form-control" th:placeholder="#{signup.name.placeholder}">
+                <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+            </div>
+            <button type="submit" class="btn btn-primary w-100" th:text="#{signup.submit}">가입하기</button>
+        </form>
+        <p class="mt-3 text-center">
+            <span th:text="#{signup.hasAccount}">이미 계정이 있으신가요?</span> <a th:href="@{/login}" th:text="#{common.login}">로그인</a>
+        </p>
+    </main>
+
+</html>
