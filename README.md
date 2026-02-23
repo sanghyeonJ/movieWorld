@@ -1,3 +1,5 @@
+[![Presentation](https://img.shields.io/badge/Presentation-View_Slide-E67E22?style=for-the-badge&logo=google-chrome)](https://sanghyeonj.github.io/movieWorld/)
+
 # Movie World
 
 ユーザーのレビューを基に**Google Gemini AI**が好みを分析し、**TMDB**の映画データと連携してパーソナライズ推薦を提供するWebアプリケーションです。  
